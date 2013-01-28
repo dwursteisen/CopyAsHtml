@@ -10,6 +10,7 @@ import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.colors.EditorColors;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.editor.impl.DocumentMarkupModel;
 import com.intellij.openapi.editor.markup.*;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.project.Project;
@@ -102,7 +103,7 @@ public class CopyAsHtmlAction extends AnAction {
         if (Configuration.FONT_SIZE_FOLLOW.equals(fontSizeType)) {
             _fontSize = Integer.valueOf(colorsScheme.getEditorFontSize());
         }
-        else if(Configuration.FONT_SIZE_FIXED.equals(fontSizeType)) {
+        else if (Configuration.FONT_SIZE_FIXED.equals(fontSizeType)) {
             _fontSize = Integer.valueOf(configuration.getFontSize());
         }
         _tabText = null;
@@ -256,7 +257,7 @@ public class CopyAsHtmlAction extends AnAction {
             if (tokenStart < endOffset && tokenEnd >= startOffset) {
                 tokenStart = Math.max(tokenStart, startOffset);
                 tokenEnd = Math.min(tokenEnd, endOffset);
-                
+
                 StringBuffer tokenText = new StringBuffer();
                 tokenText.append(text, tokenStart, tokenEnd);
                 Utils.quoteForXml(tokenText);
@@ -328,7 +329,7 @@ public class CopyAsHtmlAction extends AnAction {
     }
 
     private List getRangeHighlighters(Project project, Document document) {
-        MarkupModel documentMarkupModel = document.getMarkupModel(project);
+        MarkupModel documentMarkupModel = DocumentMarkupModel.forDocument(document, project, false);
         RangeHighlighter[] highlighters = documentMarkupModel.getAllHighlighters();
         List rangeHighlighters = new ArrayList(highlighters.length);
         Configuration configuration = Configuration.getInstance();
